@@ -27,6 +27,13 @@ def enable_streaming_llm(model, start_size, recent_size):
         )
 
         enable_falcon_pos_shift_attention(model)
+    elif "mistral" in model.config.model_type:
+        k_seq_dim = v_seq_dim = 2
+        from streaming_llm.pos_shift.modify_mistral import (
+            enable_mistral_pos_shift_attention,
+        )
+
+        enable_mistral_pos_shift_attention(model)
     else:
         raise ValueError(f"got {model.config.model_type}")
     kv_cache = StartRecentKVCache(
